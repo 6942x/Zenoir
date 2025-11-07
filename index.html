@@ -480,12 +480,8 @@
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         @keyframes scaleIn {
@@ -510,6 +506,24 @@
             }
         }
 
+        @keyframes strokeDraw {
+            from {
+                stroke-dashoffset: 1000;
+            }
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% {
+                filter: drop-shadow(0 0 10px rgba(216, 0, 255, 0.6));
+            }
+            50% {
+                filter: drop-shadow(0 0 30px rgba(216, 0, 255, 1));
+            }
+        }
+
         .modal-content {
             position: relative;
             max-width: 100%;
@@ -526,16 +540,42 @@
             animation: scaleOut 0.3s ease-out forwards;
         }
 
+        .modal-image-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         .modal-image {
             max-width: 100%;
             max-height: 100%;
-            width: 100%;
-            height: 100%;
+            width: auto;
+            height: auto;
             border-radius: 20px;
-            box-shadow: 0 0 80px rgba(216, 0, 255, 0.6), 0 0 120px rgba(216, 0, 255, 0.3);
-            border: 3px solid #D800FF;
             object-fit: contain;
             background: transparent;
+            position: relative;
+            z-index: 1;
+        }
+
+        .modal-stroke-svg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            animation: glowPulse 2s ease-in-out infinite;
+        }
+
+        .modal-stroke-svg rect {
+            fill: none;
+            stroke: #D800FF;
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 1000;
+            animation: strokeDraw 2s ease-out forwards;
         }
 
         .close-button {
@@ -851,7 +891,12 @@
     <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
         <div class="modal-content" id="modalContent">
             <button class="close-button" onclick="closeModal()">✕</button>
-            <img id="modalImage" class="modal-image" src="" alt="">
+            <div class="modal-image-wrapper" id="modalImageWrapper">
+                <img id="modalImage" class="modal-image" src="" alt="">
+                <svg id="modalStrokeSvg" class="modal-stroke-svg" viewBox="0 0 400 300">
+                    <rect x="10" y="10" width="380" height="280" rx="20"></rect>
+                </svg>
+            </div>
         </div>
     </div>
 
@@ -864,11 +909,34 @@
         const modalOverlay = document.getElementById('modalOverlay');
         const modalContent = document.getElementById('modalContent');
         const modalImage = document.getElementById('modalImage');
+        const modalImageWrapper = document.getElementById('modalImageWrapper');
+        const modalStrokeSvg = document.getElementById('modalStrokeSvg');
+
+        function updateStrokeBorder() {
+            const rect = modalImage.getBoundingClientRect();
+            const wrapperRect = modalImageWrapper.getBoundingClientRect();
+            
+            const padding = 15;
+            const width = rect.width + padding * 2;
+            const height = rect.height + padding * 2;
+            
+            modalStrokeSvg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+            modalStrokeSvg.style.width = width + 'px';
+            modalStrokeSvg.style.height = height + 'px';
+            
+            const rectElement = modalStrokeSvg.querySelector('rect');
+            rectElement.setAttribute('width', width - 20);
+            rectElement.setAttribute('height', height - 20);
+        }
 
         function openModal(imgElement) {
             modalImage.src = imgElement.src;
             modalOverlay.classList.add('active');
             document.body.style.overflow = 'hidden';
+            
+            modalImage.onload = function() {
+                updateStrokeBorder();
+            };
         }
 
         function closeModal() {
@@ -1015,6 +1083,10 @@
             box.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
             fadeObserver.observe(box);
         });
+
+        window.addEventListener('resize', () => {
+            if (modalOverlay.classList.contains('active')) {
+                updateStrokeBorder();
+            }
+        });
     </script>
-</body>
-</html>
