@@ -486,7 +486,7 @@
 
         .projects-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 1.5rem;
         }
 
@@ -717,34 +717,6 @@
         .discord-button:hover {
             transform: translateY(-3px);
             box-shadow: 0 0 40px rgba(88, 101, 242, 0.8);
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .social-icon {
-            width: 45px;
-            height: 45px;
-            border-radius: 10px;
-            background: rgba(216, 0, 255, 0.2);
-            border: 1px solid rgba(216, 0, 255, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #D800FF;
-            text-decoration: none;
-            font-size: 1.2rem;
-            transition: all 0.3s;
-        }
-
-        .social-icon:hover {
-            background: rgba(216, 0, 255, 0.4);
-            box-shadow: 0 0 20px rgba(216, 0, 255, 0.6);
-            transform: translateY(-5px);
         }
 
         footer {
@@ -1022,7 +994,7 @@
             }
             
             .projects-container {
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                grid-template-columns: repeat(4, 1fr);
                 gap: 2rem;
             }
             
@@ -1061,12 +1033,6 @@
                 font-size: 1rem;
             }
             
-            .social-icon {
-                width: 50px;
-                height: 50px;
-                font-size: 1.3rem;
-            }
-            
             .modal-image-container {
                 padding: 40px;
             }
@@ -1088,6 +1054,18 @@
                 width: 50px;
                 height: 50px;
                 font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .projects-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .projects-container {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
@@ -1127,6 +1105,10 @@
             
             .home-img {
                 display: none;
+            }
+            
+            .projects-container {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -1168,10 +1150,6 @@
                 height: 200px;
             }
             
-            .projects-container {
-                grid-template-columns: 1fr;
-            }
-            
             .project-box {
                 height: 200px;
             }
@@ -1209,16 +1187,6 @@
             .discord-button {
                 padding: 0.8rem 1.5rem;
                 font-size: 0.9rem;
-            }
-            
-            .social-links {
-                gap: 0.8rem;
-            }
-            
-            .social-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 1rem;
             }
             
             .modal-image-container {
@@ -1339,6 +1307,18 @@
                     <img src="https://i.postimg.cc/TYmHHjjm/qq.png" alt="Project" class="project-img" onclick="openModal(this)">
                 </div>
             </div>
+
+            <div class="project-box">
+                <div class="project-media">
+                    <img src="https://i.postimg.cc/TYmHHjjm/qq.png" alt="Project" class="project-img" onclick="openModal(this)">
+                </div>
+            </div>
+
+            <div class="project-box">
+                <div class="project-media">
+                    <img src="https://i.postimg.cc/TYmHHjjm/qq.png" alt="Project" class="project-img" onclick="openModal(this)">
+                </div>
+            </div>
         </div>
     </section>
 
@@ -1394,13 +1374,7 @@
             <div class="contact-content">
                 <h3>Let's Create Something Amazing</h3>
                 <p>I'm always excited to work on new projects and collaborate with talented individuals. Whether you have a specific project in mind or just want to chat about design, reach out to me on Discord.</p>
-                <a href="https://discord.com/users/1186388052877254656" target="_blank" class="discord-button">💬 Contact me on Discord</a>
-                <div class="social-links">
-                    <a href="#" class="social-icon">📷</a>
-                    <a href="#" class="social-icon">🐦</a>
-                    <a href="#" class="social-icon">💼</a>
-                    <a href="#" class="social-icon">📧</a>
-                </div>
+                <a href="https://discord.com/users/1186388052877254656" target="_blank" class="discord-button">Contact me on Discord</a>
             </div>
         </div>
     </section>
@@ -1439,11 +1413,10 @@
 
         let currentScale = 1;
         const minScale = 0.5;
-        const maxScale = 3;
-        const scaleStep = 0.2;
+        const maxScale = 5;
+        const scaleStep = 0.3;
         let isDragging = false;
         let startX, startY, scrollLeft, scrollTop;
-        let lastZoomPoint = { x: 0, y: 0 };
 
         function openModal(imgElement) {
             modalImage.src = imgElement.src;
@@ -1470,15 +1443,35 @@
             }
         }
 
+        function zoomIn() {
+            const rect = modalImageContainer.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            zoomToPoint(currentScale + scaleStep, centerX, centerY);
+        }
+
+        function zoomOut() {
+            const rect = modalImageContainer.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            zoomToPoint(currentScale - scaleStep, centerX, centerY);
+        }
+
+        function resetZoom() {
+            currentScale = 1;
+            modalImage.style.transform = `scale(${currentScale})`;
+            modalImage.classList.add('zoomable');
+            modalImage.classList.remove('zoomed');
+            modalImageContainer.style.cursor = 'zoom-in';
+            modalImageContainer.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+        }
+
         function zoomToPoint(scale, clientX, clientY) {
             const rect = modalImage.getBoundingClientRect();
             const containerRect = modalImageContainer.getBoundingClientRect();
             
             const imageX = clientX - rect.left;
             const imageY = clientY - rect.top;
-            
-            const currentX = (imageX / rect.width) * modalImage.naturalWidth;
-            const currentY = (imageY / rect.height) * modalImage.naturalHeight;
             
             const newScale = Math.max(minScale, Math.min(maxScale, scale));
             const scaleChange = newScale / currentScale;
@@ -1503,38 +1496,6 @@
                 modalImageContainer.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
             }
         }
-
-        function zoomIn() {
-            const rect = modalImageContainer.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            zoomToPoint(currentScale + scaleStep, centerX, centerY);
-        }
-
-        function zoomOut() {
-            const rect = modalImageContainer.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
-            zoomToPoint(currentScale - scaleStep, centerX, centerY);
-        }
-
-        function resetZoom() {
-            currentScale = 1;
-            modalImage.style.transform = `scale(${currentScale})`;
-            modalImage.classList.add('zoomable');
-            modalImage.classList.remove('zoomed');
-            modalImageContainer.style.cursor = 'zoom-in';
-            modalImageContainer.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-        }
-
-        modalImageContainer.addEventListener('wheel', (e) => {
-            e.preventDefault();
-            if (e.deltaY < 0) {
-                zoomToPoint(currentScale + scaleStep, e.clientX, e.clientY);
-            } else {
-                zoomToPoint(currentScale - scaleStep, e.clientX, e.clientY);
-            }
-        });
 
         modalImageContainer.addEventListener('mousedown', (e) => {
             if (currentScale > 1 && e.target === modalImage) {
@@ -1582,6 +1543,7 @@
         });
 
         let initialDistance = null;
+        let initialScale = 1;
 
         modalImageContainer.addEventListener('touchstart', (e) => {
             if (e.touches.length === 2) {
@@ -1590,6 +1552,7 @@
                     e.touches[0].clientX - e.touches[1].clientX,
                     e.touches[0].clientY - e.touches[1].clientY
                 );
+                initialScale = currentScale;
             } else if (e.touches.length === 1 && currentScale > 1) {
                 const touch = e.touches[0];
                 startX = touch.pageX - modalImageContainer.offsetLeft;
@@ -1609,13 +1572,12 @@
                 
                 if (initialDistance) {
                     const scaleChange = currentDistance / initialDistance;
-                    const newScale = Math.max(minScale, Math.min(maxScale, currentScale * scaleChange));
+                    const newScale = Math.max(minScale, Math.min(maxScale, initialScale * scaleChange));
                     
                     const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
                     const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
                     
                     zoomToPoint(newScale, midX, midY);
-                    initialDistance = currentDistance;
                 }
             } else if (e.touches.length === 1 && currentScale > 1) {
                 e.preventDefault();
