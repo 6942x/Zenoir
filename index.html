@@ -487,7 +487,7 @@
 
         .projects-container {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 1.5rem;
         }
 
@@ -502,7 +502,7 @@
             position: relative;
             display: flex;
             flex-direction: column;
-            height: 250px;
+            height: 280px;
         }
 
         .project-box::after {
@@ -550,6 +550,23 @@
 
         .project-media img:hover {
             transform: scale(1.05);
+        }
+
+        .project-title {
+            padding: 0.8rem 1rem;
+            background: transparent;
+            text-align: center;
+            border: none;
+            font-weight: 600;
+            color: rgba(216, 0, 255, 0.8);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .project-box:hover .project-title {
+            background: transparent;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 0 10px rgba(216, 0, 255, 0.8);
         }
 
         .pricing-container {
@@ -984,12 +1001,12 @@
             }
             
             .projects-container {
-                grid-template-columns: repeat(4, 1fr);
+                grid-template-columns: repeat(3, 1fr);
                 gap: 2rem;
             }
             
             .project-box {
-                height: 300px;
+                height: 320px;
             }
             
             .pricing-container {
@@ -1141,7 +1158,12 @@
             }
             
             .project-box {
-                height: 200px;
+                height: 240px;
+            }
+            
+            .project-title {
+                padding: 0.6rem 0.8rem;
+                font-size: 0.85rem;
             }
             
             .pricing-container {
@@ -1266,48 +1288,56 @@
                 <div class="project-media">
                     <img src="https://i.postimg.cc/TYmHHjjm/qq.png" alt="Project" class="project-img" onclick="openModal(this)">
                 </div>
+                <div class="project-title">N Word is Fine</div>
             </div>
 
             <div class="project-box">
                 <div class="project-media">
                     <img src="https://i.postimg.cc/TYmHHjjm/qq.png" alt="Project" class="project-img" onclick="openModal(this)">
                 </div>
+                <div class="project-title">N Word is Fine</div>
             </div>
 
             <div class="project-box">
                 <div class="project-media">
                     <img src="https://i.postimg.cc/TYmHHjjm/qq.png" alt="Project" class="project-img" onclick="openModal(this)">
                 </div>
+                <div class="project-title">N Word is Fine</div>
             </div>
 
             <div class="project-box">
                 <div class="project-media">
                     <img src="https://i.postimg.cc/TYmHHjjm/qq.png" alt="Project" class="project-img" onclick="openModal(this)">
                 </div>
+                <div class="project-title">N Word is Fine</div>
             </div>
 
             <div class="project-box">
                 <div class="project-media">
                     <img src="https://i.postimg.cc/TYmHHjjm/qq.png" alt="Project" class="project-img" onclick="openModal(this)">
                 </div>
+                <div class="project-title">N Word is Fine</div>
             </div>
 
             <div class="project-box">
                 <div class="project-media">
                     <img src="https://i.postimg.cc/TYmHHjjm/qq.png" alt="Project" class="project-img" onclick="openModal(this)">
                 </div>
+                <div class="project-title">N Word is Fine</div>
             </div>
 
             <div class="project-box">
                 <div class="project-media">
                     <img src="https://i.postimg.cc/TYmHHjjm/qq.png" alt="Project" class="project-img" onclick="openModal(this)">
                 </div>
+                <div class="project-title">N Word is Fine</div>
             </div>
 
             <div class="project-box">
                 <div class="project-media">
                     <img src="https://i.postimg.cc/TYmHHjjm/qq.png" alt="Project" class="project-img" onclick="openModal(this)">
                 </div>
+                <div class="project-title">N Word is Fine</div>
             </div>
         </div>
     </section>
